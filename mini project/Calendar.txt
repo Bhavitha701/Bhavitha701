@@ -1,0 +1,97 @@
+package app;
+import java.util.*;
+
+public class Calendar {
+
+    // Function that returns the index of the day for date DD/MM/YYYY
+    public static int dayNumber(int day, int month, int year) {
+        int[] t = { 0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4 };
+        year -= (month < 3) ? 1 : 0;
+        return (year + year / 4 - year / 100 + year / 400 + t[month - 1] + day) % 7;
+    }
+
+    // Function that returns the name of the month for the given month Number
+    public static String getMonthName(int monthNumber) {
+        String month;
+        switch (monthNumber) {
+            case 0: month = "January"; break;
+            case 1: month = "February"; break;
+            case 2: month = "March"; break;
+            case 3: month = "April"; break;
+            case 4: month = "May"; break;
+            case 5: month = "June"; break;
+            case 6: month = "July"; break;
+            case 7: month = "August"; break;
+            case 8: month = "September"; break;
+            case 9: month = "October"; break;
+            case 10: month = "November"; break;
+            case 11: month = "December"; break;
+            default: month = "Unknown"; break;
+        }
+        return month;
+    }
+
+    // Function to return the number of days in a month
+    public static int numberOfDays(int monthNumber, int year) {
+        if (monthNumber == 1) { // February
+            if (year % 400 == 0 || (year % 4 == 0 && year % 100 != 0))
+                return 29; // Leap year
+            else
+                return 28;
+        }
+        // Months with 30 days
+        if (monthNumber == 3 || monthNumber == 5 || monthNumber == 8 || monthNumber == 10)
+            return 30;
+        // Months with 31 days
+        return 31;
+    }
+
+    // Function to print the calendar of the given year
+    public static void printCalendar(int year) {
+        System.out.printf("      Calendar - %d\n\n", year);
+        int days;
+
+        // Index of the day from 0 to 6
+        int current = dayNumber(1, 1, year);
+
+        // Iterate through months
+        for (int i = 0; i < 12; i++) {
+            days = numberOfDays(i, year);
+
+            // Print the current month name
+            System.out.printf("\n ----------- %s -----------\n", getMonthName(i));
+
+            // Print the columns
+            System.out.println(" Sun Mon Tue Wed Thu Fri Sat");
+
+            // Print appropriate spaces for the first day of the month
+            int k;
+            for (k = 0; k < current; k++)
+                System.out.print("    ");
+
+            for (int j = 1; j <= days; j++) {
+                System.out.printf("%4d", j);
+
+                if (++k > 6) {
+                    k = 0;
+                    System.out.println();
+                }
+            }
+
+            if (k != 0)
+                System.out.println();
+
+            current = k;
+        }
+    }
+
+    // Driver Code
+    public static void main(String[] args) {
+        int year = 2024; // Change the year as needed
+
+        // Function Call
+        printCalendar(year);
+    }
+}
+
+
